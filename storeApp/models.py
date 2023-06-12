@@ -5,7 +5,7 @@ import uuid
 from django.contrib.auth.models import User
 # from twilio.rest import Client
 import os
-
+from  django.utils.timezone import now
 # Create your models here.
 
 
@@ -125,7 +125,7 @@ class ProductAndSupplierAndReceiverTable(models.Model):
 
 
 class productSoldInCash(models.Model):
-    now_date = datetime.today().date()
+    now_date = now().date
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     product_name = models.ForeignKey(
