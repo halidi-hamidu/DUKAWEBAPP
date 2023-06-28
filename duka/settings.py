@@ -17,7 +17,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASE_URL = "postgresql://postgres:Rh9KFzAtNWN5tj2KhnG3@containers-us-west-69.railway.app:7650/railway"
+# DATABASE_URL = "postgresql://postgres:Rh9KFzAtNWN5tj2KhnG3@containers-us-west-69.railway.app:7650/railway"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS =['https://dukawebapp-production.up.railway.app','https://*.127.0.0.1']
+# CSRF_TRUSTED_ORIGINS =['https://dukawebapp-production.up.railway.app','https://*.127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -77,10 +77,15 @@ WSGI_APPLICATION = 'duka.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+# DATABASES = {
+#     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
+# }
 
 
 
