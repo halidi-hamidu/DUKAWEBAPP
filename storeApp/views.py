@@ -23,7 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf.global_settings import LOGIN_URL
 from django.utils import timezone
 from io import BytesIO
-from msilib.schema import File
+# from msilib.schema import File
 from re import template
 from unittest import result
 from django.template.loader import get_template
@@ -32,25 +32,25 @@ from django.template.loader import get_template
 
 # from django.views.generic import View
 # from .process import html_to_pdf
-def html_to_pdf(template_src, context_dict = {}):
-  template = get_template(template_src)
-  html = template.render(context_dict)
-  result = BytesIO()
-  pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
-  if not pdf.err:
-    return HttpResponse(result.getvalue(), content_type = 'application/pdf')
-  return None
+# def html_to_pdf(template_src, context_dict = {}):
+#   template = get_template(template_src)
+#   html = template.render(context_dict)
+#   result = BytesIO()
+#   pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+#   if not pdf.err:
+#     return HttpResponse(result.getvalue(), content_type = 'application/pdf')
+#   return None
 
-def myView(request):
+# def myView(request):
 
-  get_products =  ProductTable.objects.all()
-  open('templates/temp.html', "w").write(render_to_string('result.html',{'get_products':get_products} ))
+#   get_products =  ProductTable.objects.all()
+#   open('templates/temp.html', "w").write(render_to_string('result.html',{'get_products':get_products} ))
 
-  # converting html inot pdf  File
-  pdf = html_to_pdf('temp.html')
+#   # converting html inot pdf  File
+#   pdf = html_to_pdf('temp.html')
 
-  # render the template
-  return HttpResponse(pdf, content_type = 'application/pdf')
+#   # render the template
+#   return HttpResponse(pdf, content_type = 'application/pdf')
 #  Create your views here.
 # storePage
 def testPage(request):

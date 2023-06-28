@@ -31,6 +31,6 @@ urlpatterns = [
     path('delete-product-in-store/<str:id>/', views.deleteProductInStore, name="deleteProductInStore"),
     path('activate-user/<str:id>/', views.activateUserAuthorizations, name="activateUserAuthorizations"),
     path('deactivate-user/<str:id>/', views.deactivateUserAuthorizations, name="deactivateUserAuthorizations"),
-    path('pdf/', views.myView, name="myView"),
+    # path('pdf/', views.myView, name="myView"),
     path('company-Stock', views.companyStockPage, name="companyStockPage"),
 ]
