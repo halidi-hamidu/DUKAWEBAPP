@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views 
+# from .views import GeneratePdf
 
 app_name = 'storeApp'
 
@@ -31,6 +32,8 @@ urlpatterns = [
     path('delete-product-in-store/<str:id>/', views.deleteProductInStore, name="deleteProductInStore"),
     path('activate-user/<str:id>/', views.activateUserAuthorizations, name="activateUserAuthorizations"),
     path('deactivate-user/<str:id>/', views.deactivateUserAuthorizations, name="deactivateUserAuthorizations"),
-    # path('pdf/', views.myView, name="myView"),
+      path('pdf/<str:id>/', views.generatePdf, name ="generatePdf"),
     path('company-Stock', views.companyStockPage, name="companyStockPage"),
+    path('customer-details', views.customerDetails, name="customerDetails"),
+    
 ]

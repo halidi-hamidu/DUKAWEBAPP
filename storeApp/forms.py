@@ -123,3 +123,15 @@ class CompanyStockOrAssetsForm(ModelForm):
       'created_at',
       'updated_at'
     ]
+    
+    
+    
+class customerDetailsForm(ModelForm):
+  class Meta:
+    model = CustomerDetails
+    fields ='__all__'
+    exclude =[
+      
+      'created_at',
+      'updated_at'
+    ]

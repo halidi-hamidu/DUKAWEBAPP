@@ -6,8 +6,39 @@ from django.contrib.auth.models import User
 # from twilio.rest import Client
 import os
 from  django.utils.timezone import now
-# Create your models here.
 
+# Create your models here.
+class CustomerDetails(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    customer_full_name = models.CharField(max_length=1000)
+    customer_phone_number = models.IntegerField()
+    # never change once the object is created
+    created_at = models.DateTimeField(auto_now_add=True)
+    # always change when object is updated
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'List of Customers'
+
+    def __str__(self):
+        return str(self.customer_full_name)
+    
+    
+class ShopBrandMainLogo(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    brand_image = models.ImageField(upload_to='media')
+    # never change once the object is created
+    created_at = models.DateTimeField(auto_now_add=True)
+    # always change when object is updated
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Company logo/  brand'
+
+    def __str__(self):
+        return str(self.id)
 
 class ProductTable(models.Model):
     id = models.UUIDField(
@@ -123,20 +154,23 @@ class ProductAndSupplierAndReceiverTable(models.Model):
 
 # productSoldInCash
 
-
+# 
 class productSoldInCash(models.Model):
     now_date = now().date
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     product_name = models.ForeignKey(
         ProductAndSupplierAndReceiverTable, on_delete=models.SET_NULL, null=True)
+    customer_full_name = models.ForeignKey(CustomerDetails, on_delete=models.CASCADE, blank=True, null=True)
     number_of_product_nedeed = models.IntegerField()
     date_product_sold = models.DateTimeField(default=now_date)
     total_product_cost = models.PositiveIntegerField(null=True, blank=True)
     supervisor = models.ForeignKey(
-        EmployeeDetailInformations, on_delete=models.SET_NULL, null=True)
+        User, on_delete=models.SET_NULL, null=True)
     shop_name = models.ForeignKey(ShopsTable, on_delete=models.CASCADE)
     store_remain = models.PositiveIntegerField(null=True, blank=True)
+    
+    date_for_issues_invoice = models.DateField(default=now_date)
     # never change once the object is created
     created_at = models.DateTimeField(auto_now_add=True)
     # always change when object is updated
@@ -171,8 +205,7 @@ class EmergenceInformations(models.Model):
 class CustomersOrders(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    customer_Full_name = models.CharField(max_length=2000)
-    customer_phone_number = models.IntegerField()
+    custoomer_full_name = models.ForeignKey(CustomerDetails, on_delete=models.SET_NULL, null=True, blank=True)
     customer_order = models.CharField(max_length=2000)
     customer_quantity_nedeed = models.IntegerField()
     delivery_date_expected = models.DateField()

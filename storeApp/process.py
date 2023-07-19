@@ -1,26 +1,15 @@
-import plotly.graph_objects as go
-fig = go.Figure()
+# importing the necessary libraries
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa  
 
-fig.add_trace(go.Bar(x=[1, 2, 3], y=[40, 50, 60],name="yaxis1 data", yaxis='y'))
-
-fig.add_trace(go.Scatter(x=[2, 3, 4], y=[4, 5, 6],name="yaxis2 data", yaxis="y2"))
-
-# Create axis objects
-fig.update_layout(xaxis=dict(domain=[0.3, 0.7]),
-    #create 1st y axis             
-    yaxis=dict(
-        title="yaxis title",
-        titlefont=dict(color="#1f77b4"),
-        tickfont=dict(color="#1f77b4")),
-                  
-    #create 2nd y axis      
-    yaxis2=dict(title="yaxis2 title",overlaying="y",
-                side="left",position=0.15))
-
-# title
-fig.update_layout(
-    title_text="Geeksforgeeks - Three y-axes",
-    width=800,
-)
-
-fig.show()
+# defining the function to convert an HTML file to a PDF file
+def html_to_pdf(template_src, context_dict={}):
+     template = get_template(template_src)
+     html  = template.render(context_dict)
+     result = BytesIO()
+     pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+     if not pdf.err:
+         return HttpResponse(result.getvalue(), content_type='application/pdf')
+     return None

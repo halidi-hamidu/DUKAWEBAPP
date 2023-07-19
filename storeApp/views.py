@@ -23,35 +23,100 @@ from django.contrib.auth.decorators import login_required
 from django.conf.global_settings import LOGIN_URL
 from django.utils import timezone
 from io import BytesIO
-# from msilib.schema import File
+from msilib.schema import File
 from re import template
 from unittest import result
 from django.template.loader import get_template
-# from xhtml2pdf import pisa
+# importing the necessary libraries
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
-
-# from django.views.generic import View
-# from .process import html_to_pdf
-# def html_to_pdf(template_src, context_dict = {}):
-#   template = get_template(template_src)
-#   html = template.render(context_dict)
-#   result = BytesIO()
-#   pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
-#   if not pdf.err:
-#     return HttpResponse(result.getvalue(), content_type = 'application/pdf')
-#   return None
-
-# def myView(request):
-
-#   get_products =  ProductTable.objects.all()
-#   open('templates/temp.html', "w").write(render_to_string('result.html',{'get_products':get_products} ))
-
-#   # converting html inot pdf  File
-#   pdf = html_to_pdf('temp.html')
-
-#   # render the template
-#   return HttpResponse(pdf, content_type = 'application/pdf')
 #  Create your views here.
+#Creating a class based view
+
+def generatePdf(request, id ):
+  try:
+    get_logo = ShopBrandMainLogo.objects.all()[:1]
+    template_path = 'receiptFolder/receiptInPdf.html'
+    for brand in get_logo:
+      logo = brand.brand_image.path
+   
+   
+    get_product_sold= get_object_or_404(productSoldInCash, id = id)
+    if get_product_sold:
+      count_get_product_sold = 1
+      
+    
+  
+    customer_full_name =  get_product_sold.customer_full_name
+    date_of_issues_invoice =  get_product_sold.date_for_issues_invoice
+    
+    filter_list_of_product_purchased_by_customer_in__same_date = productSoldInCash.objects.filter(
+      customer_full_name = get_product_sold.customer_full_name,
+      date_for_issues_invoice = get_product_sold.date_for_issues_invoice
+    )
+    get_subtotal = 0
+   
+    for product_sold in filter_list_of_product_purchased_by_customer_in__same_date:
+      get_subtotal += product_sold.total_product_cost
+      get_invoice_issued_by = product_sold.supervisor
+    
+    print(get_invoice_issued_by)
+    count_filter_list_of_product_purchased_by_customer_in__same_date =filter_list_of_product_purchased_by_customer_in__same_date.count()
+    print("-----", count_filter_list_of_product_purchased_by_customer_in__same_date)
+    context = {
+      'get_logo': logo,
+      'get_product_sold':get_product_sold,
+      'count_get_product_sold':count_get_product_sold,
+      'get_subtotal':get_subtotal,
+      'customer_full_name':customer_full_name,
+      'date_of_issues_invoice':date_of_issues_invoice,
+      'get_invoice_issued_by':get_invoice_issued_by,
+      'filter_list_of_product_purchased_by_customer_in__same_date':filter_list_of_product_purchased_by_customer_in__same_date,
+      'count_filter_list_of_product_purchased_by_customer_in__same_date':count_filter_list_of_product_purchased_by_customer_in__same_date
+      }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = ' filename="receipt.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+    # if error then show some funny view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+  except :
+    messages.info(request, "Data inconsistent, please upload Logo")
+    return redirect('storeApp:salesPage')
+
+
+
+      
+      
+def customerDetails(request):
+  if request.method == "POST" and request.POST.get('customer_info'):
+     form = customerDetailsForm(request.POST)
+     print("00000000000000000")
+     if form.is_valid():
+       form.save()
+       messages.success(request, "Customer information Saved ")
+       return redirect ("storeApp:salesPage")
+  else:
+    template_name = 'store/customerDetailsPage.html'
+    context = {
+      
+    }
+    
+    return render (request, template_name , context)
+       
+
+
+     
 # storePage
 def testPage(request):
   ResourceLoader.create_module()
@@ -654,6 +719,8 @@ def employeePage(request):
 @login_required(login_url=LOGIN_URL)
 # salesPage
 def salesPage(request):
+  
+     
   # sell_product
   if request.method == "POST" and request.POST.get('sell_product'):
 
@@ -671,27 +738,29 @@ def salesPage(request):
         return redirect("storeApp:salesPage")
       elif number_of_product_nedeed < get_product_quantity_in_a_store:
         get_product_cost_after_sold= int(get_product.amount_to_sold) * number_of_product_nedeed
+        get_customer_info = request.POST.get('customer_full_name')
+        print("=====================", get_customer_info)
         instance = form.save(commit= False)
         instance.total_product_cost =get_product_cost_after_sold
+        # instance.customer
         store_remain =int(get_product.product_quantity) - number_of_product_nedeed
         product_cost_remain_in_store = store_remain * int(get_product.product_cost)
         update_product_quantity_in_store = ProductAndSupplierAndReceiverTable.objects.filter(id =get_product_id ).update(
         product_quantity=store_remain,total_product_cost = product_cost_remain_in_store)
         x = datetime.datetime.now()
-        print(x.strftime("%d"))
-        print(date_product_sold)
+        
         # print(get_product.created_at,"created")
         # get_product.update(product_quantity=store_remain)
         # get_product.save()
         instance.store_remain =store_remain
-        get_login_user = request.user.username
-        print(get_login_user)
+        get_login_user = request.user
+        
         try:
 
-          filter_login_user = EmployeeDetailInformations.objects.get( employee_username = get_login_user )
-          print('-------------', filter_login_user)
+          # filter_login_user = EmployeeDetailInformations.objects.get( employee_username = get_login_user )
+          # print('*********************************', filter_login_user)
           instance.store_remain =store_remain
-          instance.supervisor = filter_login_user
+          instance.supervisor = get_login_user
         # instance.shop_name = filter_login_user
           instance.save()
           get_product = ProductAndSupplierAndReceiverTable.objects.get(id=get_product_id) 
@@ -701,6 +770,8 @@ def salesPage(request):
           instance.store_remain =store_remain
           # instance.supervisor = filter_login_user
         # instance.shop_name = filter_login_user
+          get_login_user = request.user
+          instance.supervisor = get_login_user
           instance.save()
           get_product = ProductAndSupplierAndReceiverTable.objects.get(id=get_product_id) 
           messages.success(request, f"{get_product_id} sold by {request.user.username}")
@@ -817,7 +888,15 @@ def salesPage(request):
       customer_order = request.POST.get("customer_order")
       messages.success(request, f"{customer_order} added by {request.user.username}")
       return redirect("storeApp:salesPage")
+  
+  #customer details 
+  elif request.method == "POST" and request.POST.get('customer_info'):
+    form = customerDetailsForm(request.POST)
 
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Customer information Saved ")
+      return redirect ("storeApp:salesPage")
   else:
     try:
       get_all_user_authorizations = AuthorizeUsers.objects.get(select_user = request.user)
@@ -862,6 +941,8 @@ def salesPage(request):
     amount_remain_after_deducting_emergence_cost = today_sales_sum - today_emergence_cost_sum
     x = datetime.datetime.now()
     today = x.strftime("%x")
+    
+    get_all_customers = CustomerDetails.objects.all()
     template_name = 'store/salesPage.html'
     
     context = {
@@ -879,6 +960,7 @@ def salesPage(request):
       'amount_remain_after_deducting_emergence_cost':amount_remain_after_deducting_emergence_cost,
       'number_of_order_received_tody':number_of_order_received_tody,
       'get_all_user_authorizations':get_all_user_authorizations,
+      'get_all_customers':get_all_customers
 
     }
     return render (request, template_name, context)
