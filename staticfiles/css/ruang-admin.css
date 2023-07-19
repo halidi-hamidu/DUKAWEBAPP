@@ -602,7 +602,8 @@ select{
 }
 
 .bg-navbar {
-  background-color: #6777ef
+  background-color: #fff;
+  /* background-color: #f00 */
 }
 
 .sidebar {
@@ -1097,7 +1098,7 @@ select{
 
 .sidebar-light .sidebar-brand {
   color: #fafafa;
-  background-color: #4c60da
+  background-color: rgb(187, 5, 5);
 }
 
 .sidebar-light hr.sidebar-divider {
