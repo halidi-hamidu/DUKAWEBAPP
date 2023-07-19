@@ -1,10 +1,12 @@
-<div class="tabe_section">
-  <div class="container-fluid">
+<div class="tabe_section ">
+  <div class="container-fluid ">
     <div class="row">
       <div class="col-xl-12 col-lg-12 mb-4">
         <div class="card">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">My Sales</h6>
+            {% comment %} <h6 class="m-0 font-weight-bold text-primary">My Sales</h6> {% endcomment %}
+            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#customerModal"
+            id="#customerModal"><i class="fas fa-plus p-1"></i>New Customer</button>
             <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#orderModal"
             id="#orderModal"><i class="fas fa-plus p-1"></i>New Order</button>
             <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#emergenceModal"
@@ -51,6 +53,7 @@
                   <!-- <td>{{product_sold.shop_name.shop_name}}</td> -->
                   <td>
                     <a data-toggle="modal" data-target="#productSoldDetailViewModal{{product_sold.id}}" class="btn btn-sm btn-outline-primary text-primary"><i class="fas fas fa-eye"></i></a>
+                    <a data-toggle="modal" data-target="#printReceiptForProductSold{{product_sold.id}}" class="btn btn-sm btn-outline-primary text-info"><i class="fas fas fa-print"></i></a>
                     <!-- update button is here  -->
                     <!-- <a  data-toggle="modal" data-target="#updateproductSoldModal{{product_sold.id}}"
                     class="btn btn-sm btn-outline-warning"  ><i class="fas fas fas fa-pen"></i></a> -->
@@ -58,6 +61,7 @@
                   </td>
                 </tr>
                 {% include './deleteProductSoldModal.html' %}
+                {% include './printReceiptForProductSold.html' %}
                 {% include './productSoldDetailViewModal.html' %}
                 {% include './updateproductSoldModal.html' %}
                {% endfor %}
@@ -73,5 +77,6 @@
   </div>
 </div>
 {% include './salesModal.html' %}
+{% include './customerModal.html' %}
 {% include './orderModal.html' %}
 {% include './emergenceModal.html' %}

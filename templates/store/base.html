@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="Halidy-coder">
-  <!-- <link href="{% static 'img/logo/logo.png' %}" rel="icon"> -->
+  <link href="{% static 'img/logo/logo.jpg' %}" rel="icon"> 
   <title>dukani- {% block title %} {% endblock %}</title>
   <script src="{% static './js/demo/chart.js' %}"></script>
   <link href="{% static './vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -41,11 +41,11 @@
   <!-- Sidebar -->
   <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="homePage">
-      <div class="sidebar-brand-icon">
+      {% comment %} <div class="sidebar-brand-icon">
         <!-- <img src="{% static 'img/logo/logo2.png' %}"> -->
         <span>RA</span>
-      </div>
-      <div class="sidebar-brand-text mx-3">MINI-SHOP</div>
+      </div> {% endcomment %}
+      <div class="sidebar-brand-text mx">JEMAD AUTO SPARE</div>
     </a>
     <hr class="sidebar-divider my-0">
     {% if get_all_user_authorizations.view_dashboard %}
@@ -56,6 +56,25 @@
       </li>
     <hr class="sidebar-divider">
     {% endif %}
+
+    {% if get_all_user_authorizations.manage_employees %}
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'storeApp:employeePage' %}">
+        <i class="fas fa-users fa-2x text-success"></i>
+        <span>Manage Employees</span></a>
+    </li>
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if get_all_user_authorizations.manage_authorizations %}
+
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'storeApp:authorizationPage' %}">
+      <i class="fas far far fas fa-user-shield fa-2x text-success"></i>
+      <span>User Authorization</span></a>
+  </li>
+  <hr class="sidebar-divider">
+  {% endif %}
    
     {% if get_all_user_authorizations.manage_shop %}
     <li class="nav-item active">
@@ -98,7 +117,22 @@
     </li>
     <hr class="sidebar-divider">
     {% endif %}
-    
+    {% comment %} invoice section {% endcomment %}
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'storeApp:salesPage' %}">
+        <i class="fas far fa-money-bill-alt fa-2x text-success"></i>
+        <span>Manage Invoice</span></a>
+    </li>
+    <hr class="sidebar-divider">
+
+
+    {% comment %} endinvooice section {% endcomment %}
+    {% comment %} <li class="nav-item active">
+      <a class="nav-link" href="{% url 'storeApp:salesPage' %}">
+        <i class="fas far fa-money-bill-alt fa-2x text-success"></i>
+        <span>Manage Sales</span></a>
+    </li>
+    <hr class="sidebar-divider"> {% endcomment %}
     {% if get_all_user_authorizations.manage_orders %}
     <li class="nav-item active">
       <a class="nav-link" href="{% url 'storeApp:ordersPage' %}">
@@ -127,24 +161,9 @@
     <hr class="sidebar-divider">
     {% endif %}
 
-    {% if get_all_user_authorizations.manage_employees %}
-    <li class="nav-item active">
-      <a class="nav-link" href="{% url 'storeApp:employeePage' %}">
-        <i class="fas fa-users fa-2x text-success"></i>
-        <span>Manage Employees</span></a>
-    </li>
-  <hr class="sidebar-divider">
-  {% endif %}
+    
 
-  {% if get_all_user_authorizations.manage_authorizations %}
 
-    <li class="nav-item active">
-      <a class="nav-link" href="{% url 'storeApp:authorizationPage' %}">
-        <i class="fas far far fas fa-user-shield fa-2x text-success"></i>
-        <span>User Authorization</span></a>
-    </li>
-    <hr class="sidebar-divider">
-    {% endif %}
     
     
   
@@ -165,7 +184,7 @@
           <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
-              <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}" style="max-width: 60px">
+              <img class="img-profile rounded-circle" src="{% static 'img/logo/logo.jpg' %}" style="max-width: 60px">
               <span class="ml-2 d-none d-lg-inline text-white small">{{request.user.username}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -306,6 +325,10 @@
       });      
       $('#select2SinglePlaceholderproduct12').select2({
         placeholder: "Select product",
+        allowClear: true
+      });      
+      $('#customerModalId').select2({
+        placeholder: "Select Customer",
         allowClear: true
       });      
       $('#select2SinglePlaceholderduka').select2({
