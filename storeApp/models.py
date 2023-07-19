@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from itertools import product
 from django.db import models
 import uuid
@@ -156,21 +156,21 @@ class ProductAndSupplierAndReceiverTable(models.Model):
 
 # 
 class productSoldInCash(models.Model):
-    now_date = now().date
+
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     product_name = models.ForeignKey(
         ProductAndSupplierAndReceiverTable, on_delete=models.SET_NULL, null=True)
     customer_full_name = models.ForeignKey(CustomerDetails, on_delete=models.CASCADE, blank=True, null=True)
     number_of_product_nedeed = models.IntegerField()
-    date_product_sold = models.DateTimeField(default=now_date)
+    date_product_sold = models.DateTimeField(auto_now=True)
     total_product_cost = models.PositiveIntegerField(null=True, blank=True)
     supervisor = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
     shop_name = models.ForeignKey(ShopsTable, on_delete=models.CASCADE)
     store_remain = models.PositiveIntegerField(null=True, blank=True)
     
-    date_for_issues_invoice = models.DateField(default=now_date)
+    date_for_issues_invoice = models.DateField(("Date"), default=date.today)
     # never change once the object is created
     created_at = models.DateTimeField(auto_now_add=True)
     # always change when object is updated
