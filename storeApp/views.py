@@ -23,6 +23,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf.global_settings import LOGIN_URL
 from django.utils import timezone
 from io import BytesIO
+from msilib.schema import File
 from re import template
 from unittest import result
 from django.template.loader import get_template
@@ -1038,7 +1039,7 @@ def ordersPage(request):
 def changeOrderStatus(request, id):
   get_order_to_change = CustomersOrders.objects.filter(id = id).update(order_status = "Completed")
   get_order = CustomersOrders.objects.get(id = id)
-  messages.success(request, f"order {get_order.customer_order }  from {get_order.customer_Full_name} completed succesfull ")
+  messages.success(request, f"order {get_order.customer_order }  from {get_order.custoomer_full_name} completed succesfull ")
   return redirect("storeApp:ordersPage")
 
 # updateOrder
@@ -1053,7 +1054,7 @@ def updateOrder(request, id):
       instance.supervisor=request.user
       instance.save()
       customer_order = request.POST.get("customer_order")
-      messages.success(request, f"order {get_order.customer_order }  from {get_order.customer_Full_name} Updated succesfull ")
+      messages.success(request, f"order {get_order.customer_order }  from {get_order.custoomer_full_name} Updated succesfull ")
       return redirect("storeApp:ordersPage")
   form = CustomersOrdersForm()
   try:
