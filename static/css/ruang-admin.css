@@ -904,7 +904,7 @@ select{
 
 @media (max-width:768px) {
   #container-wrapper {
-      min-width: 100vw
+      min-width: 100vw;
   }
 
   .sidebar.toggled {
