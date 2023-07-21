@@ -18,17 +18,17 @@
             id="#productModal"><i class="fas fa-plus p-1"></i>Product</button>
             <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#supplierModal"
             id="#supplierModal"><i class="fas fa-plus p-1"></i>Supplier</button> -->
-            <button type="button" class="btn mx-1 btn-outline-primary" data-toggle="modal" data-target="#productSupplierReceiverModal"
+            <button type="button" class="btn mx-1 btn-outline-dark" data-toggle="modal" data-target="#productSupplierReceiverModal"
             id="#productSupplierReceiverModal"><i class="fas fa-plus p-1"></i>product to store</button>
            
-            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#productQuantityInStoreModal"
+            <button type="button" class="btn  btn-outline-dark" data-toggle="modal" data-target="#productQuantityInStoreModal"
             id="#productQuantityInStoreModal"><i class="fas fa-edit p-1"></i> product quantity in store</button>
           </div>
           {% if get_all_products_received %}
           <div class="table-responsive pl-2">
            
             <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-              <thead class="thead-light">
+              <thead class="" style="background-color: #000;color:#fff;">
                 <tr>
                   <th>Product</th>
                   <th>Amount@</th>
@@ -44,9 +44,9 @@
               </thead>
               <tbody>
                 {% for product in get_all_products_received %}
-                <tr>
-                  <td><a href="#">{{product.product_name}}</a></td>
-                  <td>{{product.product_cost}}</td>
+                <tr style="background-color: #000;color:#fff;">
+                  <td><a href="#" style="background-color: #000;color:#fff;">{{product.product_name}}</a></td>
+                  <td style="background-color: #000;color:#fff;">{{product.product_cost}}</td>
                   <td>{{product.product_quantity}}</td>
                   <td>{{product.supplier_full_name}}</td>
                   <!-- <td>{{product.supplier_full_name.supplier_phone_number}}</td> -->

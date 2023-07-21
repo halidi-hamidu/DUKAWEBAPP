@@ -4,14 +4,14 @@
       <div class="col-xl-12 col-lg-12 mb-4">
         <div class="card">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">My Shops</h6>
+            <h6 class="m-0 font-weight-bold text-dark">My Shops</h6>
             <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#shopModal"
             id="#shopModal"><i class="fas fa-plus p-1"></i>Shop</button>
           </div>
           {% if get_number_of_shops >= 0 %}
           <div class="table-responsive pl-2">
             <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-              <thead class="thead-light">
+              <thead class="" style="background-color: #000;color:#fff;">
                 <tr>
                   <th>#</th>
                   <th>Shop name</th>
@@ -28,9 +28,9 @@
               </thead>
               <tbody>
                 {% for shops in get_all_shops %}
-                <tr>
-                  <td><a href="#">{{forloop.counter}}</a></td>
-                  <td><a href="#">{{shops.shop_name}}</a></td>
+                <tr style="background-color: #000;color:#fff;">
+                  <td ><a href="#" style="background-color: #000;color:#fff;">{{forloop.counter}}</a></td>
+                  <td><a href="#" style="background-color: #000;color:#fff;">{{shops.shop_name}}</a></td>
                   <!-- <td>{{shops.shop_street}}</td> -->
                   <td>{{shops.shop_district}}</td>
                   <td>{{shops.shop_region}}</td>

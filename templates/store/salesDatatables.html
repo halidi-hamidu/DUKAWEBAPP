@@ -4,20 +4,20 @@
       <div class="col-xl-12 col-lg-12 mb-4">
         <div class="card">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            {% comment %} <h6 class="m-0 font-weight-bold text-primary">My Sales</h6> {% endcomment %}
-            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#customerModal"
+            {% comment %} <h6 class="m-0 font-weight-bold text-dark">My Sales</h6> {% endcomment %}
+            <button type="button" class="btn  btn-outline-dark" data-toggle="modal" data-target="#customerModal"
             id="#customerModal"><i class="fas fa-plus p-1"></i>New Customer</button>
-            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#orderModal"
+            <button type="button" class="btn  btn-outline-dark" data-toggle="modal" data-target="#orderModal"
             id="#orderModal"><i class="fas fa-plus p-1"></i>New Order</button>
-            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#emergenceModal"
+            <button type="button" class="btn  btn-outline-dark" data-toggle="modal" data-target="#emergenceModal"
             id="#emergenceModal"><i class="fas fa-plus p-1"></i>Emergence</button>
-            <button type="button" class="btn  btn-outline-primary" data-toggle="modal" data-target="#salesModal"
+            <button type="button" class="btn  btn-outline-dark" data-toggle="modal" data-target="#salesModal"
             id="#salesModal"><i class="fas fa-plus p-1"></i>New Sells</button>
           </div>
           {% if get_all_product_sold %}
           <div class="table-responsive pl-2">
             <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-              <thead class="thead-light">
+              <thead class="" style="background-color: #000;color:#fff;">
                 <tr>
                   <th>#</th>
                   <th>Product </th>
@@ -35,9 +35,9 @@
               </thead>
               <tbody>
                 {% for product_sold in get_all_product_sold %}
-                <tr>
+                <tr style="background-color: #000;color:#fff;">
                   <td>{{forloop.counter}}</td>
-                  <td><a href="#">{{product_sold.product_name}}</a></td>
+                  <td><a href="#" style="background-color: #000;color:#fff;">{{product_sold.product_name}}</a></td>
                   
                   <td>{{product_sold.product_name.amount_to_sold}}</td>
 
@@ -52,8 +52,8 @@
                   <!-- <td>{{product_sold.supervisor.employee_phone_number1}}</td> -->
                   <!-- <td>{{product_sold.shop_name.shop_name}}</td> -->
                   <td>
-                    <a data-toggle="modal" data-target="#productSoldDetailViewModal{{product_sold.id}}" class="btn btn-sm btn-outline-primary text-primary"><i class="fas fas fa-eye"></i></a>
-                    <a data-toggle="modal" data-target="#printReceiptForProductSold{{product_sold.id}}" class="btn btn-sm btn-outline-primary text-info"><i class="fas fas fa-print"></i></a>
+                    <a data-toggle="modal" data-target="#productSoldDetailViewModal{{product_sold.id}}" class="btn btn-sm btn-outline-dark text-primary"><i class="fas fas fa-eye"></i></a>
+                    <a data-toggle="modal" data-target="#printReceiptForProductSold{{product_sold.id}}" class="btn btn-sm btn-outline-dark text-info"><i class="fas fas fa-print"></i></a>
                     <!-- update button is here  -->
                     <!-- <a  data-toggle="modal" data-target="#updateproductSoldModal{{product_sold.id}}"
                     class="btn btn-sm btn-outline-warning"  ><i class="fas fas fas fa-pen"></i></a> -->
