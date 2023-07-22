@@ -172,7 +172,7 @@ def homepage(request):
     print('= homepage=======')
     number_of_order_received_tody=get_all_today_orders.count()
     # today sales start here
-    get_all_product_sold_today = productSoldInCash.objects.filter(date_product_sold = today_date)
+    get_all_product_sold_today = productSoldInCash.objects.filter(date_for_issues_invoice = today_date)
     # print(get_all_product_sold_today.total_product_cost)
     today_sales_sum = 0
     today_emergence_cost_sum = 0
@@ -732,6 +732,7 @@ def salesPage(request):
     get_product = ProductAndSupplierAndReceiverTable.objects.get(id=get_product_id )
     get_product_quantity_in_a_store = int(get_product.product_quantity)
     form = productSoldInCashForm(request.POST)
+
     if form.is_valid():
       if number_of_product_nedeed > get_product_quantity_in_a_store:
         messages.info(request, f" {get_product} remains only {get_product_quantity_in_a_store} please add more quantity to the store to continue selling this products")
@@ -919,7 +920,7 @@ def salesPage(request):
     get_all_today_orders = CustomersOrders.objects.filter(delivery_date_expected=today_date )
     number_of_order_received_tody=get_all_today_orders.count()
     # today sales start here
-    get_all_product_sold_today = productSoldInCash.objects.filter(date_product_sold = today_date)
+    get_all_product_sold_today = productSoldInCash.objects.filter(date_for_issues_invoice = today_date)
     # print(get_all_product_sold_today.total_product_cost)
     today_sales_sum = 0
     today_emergence_cost_sum = 0
